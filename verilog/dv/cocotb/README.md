@@ -9,17 +9,16 @@
 ## afe_uart
 
 Firmware (`afe_uart/afe_uart.c`) enables the user Wishbone IF, checks CSR
-`ID == 0xAFE00001`, writes `CTRL`, pulses `sof`, polls `eof`, and prints:
+`ID == 0xAFE00020`, writes `CTRL` (`reset_b`), reads `dout`, and prints:
 
 ```
 AFE ready
-ID AFE00001
-ADC 800
+ID AFE00020
+ADC 001
 ```
 
-The Python bench pokes HIZ behavioral reals (`vinp_p_v=1.65`, `vinn_p_v=0`),
-copies `vout_v` onto the SAR `vinp_v`, and pokes SAR `vrefhi_v=3.3` after
-management GPIO goes high, then scores those UART lines.
+The Python bench forces HIZ `vinp1` high after management GPIO goes high.
+Firmware sets `enable_hv`. The DSM ideal model copies HIZ `out1` onto `dout[0]`.
 
 ```bash
 cf verify afe_uart

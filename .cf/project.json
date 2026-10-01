@@ -1,10 +1,10 @@
 {
   "project": {
-    "name": "cf-sensor-soc",
+    "name": "cf-sensor-soc-dsm",
     "type": "digital",
     "user": "jdicorpo",
-    "version": "3",
-    "github_repo_url": "https://github.com/chipfoundry/cf-sensor-soc",
+    "version": "6",
+    "github_repo_url": "https://github.com/chipfoundry/cf-sensor-soc-dsm",
     "gpio_config": {
       "5": "13'h0403",
       "6": "13'h0403",
@@ -40,8 +40,27 @@
       "36": "13'h1800",
       "37": "13'h1800"
     },
-    "user_project_wrapper_hash": "f75608f77b8b141db501b694267af5e4c18d4d1622438622d5c0b08647f00d38",
+    "user_project_wrapper_hash": "f565dc2c424d43e1f64739a1bacaf5fef72509d537ffcd17011123f144b802d2",
     "submission_state": "Draft",
-    "platform_project_id": "019d8f06-5296-40a5-9810-65a1012c99e4"
+    "platform_project_id": "d17e8439-73c2-4c09-ab6c-e317f6ef597c"
+  },
+  "precheck": {
+    "version": "1.3.7",
+    "timestamp": "2026-10-01T00:24:18.389717+00:00",
+    "pdk": "sky130A",
+    "passed": false,
+    "checks": {
+      "lvs": {
+        "status": "fail",
+        "duration_s": 104.81,
+        "details": "LVS FAILED (stat=1), see /Users/jeffdi/Projects/chipignite-ip/cf-sensor-soc-dsm/precheck_results/01_OCT_2026___00_22_24/logs/LVS_check.log"
+      },
+      "magic_drc": {
+        "status": "skip",
+        "duration_s": 0,
+        "reason": "optional (use --magic-drc to include)"
+      }
+    },
+    "input_file_hash": "8d6e8923abc10128702db60d014c4c9f86100ed4"
   }
 }

@@ -9,8 +9,7 @@
 		"*__fakediode_*",
 		"*__tapvpwrvgnd_*",
 		"*CF_BUF_HIZ_core",
-		"*CF_ADC_SAR12_core",
-		"*CF_ADC_SAR12_sar_refs_core",
+		"*CF_ADC_DSM20_core",
 		"*CF_BGR_core",
 		"*CF_REFBUF_core",
 		"*CF_SRAM_1024x32"
@@ -23,8 +22,7 @@
 	],
 	"LVS_NOFLATTEN": [
 		"CF_BUF_HIZ",
-		"CF_ADC_SAR12",
-		"CF_ADC_SAR12_sar_refs",
+		"CF_ADC_DSM20",
 		"CF_BGR",
 		"CF_REFBUF",
 		"soc_sys",
@@ -40,10 +38,8 @@
 	"LVS_VERILOG_FILES": [
 		"$UPRJ_ROOT/verilog/gl/CF_BUF_HIZ_core.v",
 		"$UPRJ_ROOT/verilog/gl/CF_BUF_HIZ.v",
-		"$UPRJ_ROOT/verilog/gl/CF_ADC_SAR12_core.v",
-		"$UPRJ_ROOT/verilog/gl/CF_ADC_SAR12.v",
-		"$UPRJ_ROOT/verilog/gl/CF_ADC_SAR12_sar_refs_core.v",
-		"$UPRJ_ROOT/verilog/gl/CF_ADC_SAR12_sar_refs.v",
+		"$UPRJ_ROOT/verilog/gl/CF_ADC_DSM20_core.v",
+		"$UPRJ_ROOT/verilog/gl/CF_ADC_DSM20.v",
 		"$UPRJ_ROOT/verilog/gl/CF_BGR_core.v",
 		"$UPRJ_ROOT/verilog/gl/CF_BGR.v",
 		"$UPRJ_ROOT/verilog/gl/CF_REFBUF_core.v",

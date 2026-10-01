@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 IP_DIR = ROOT / "ip"
 DEP_FILE = IP_DIR / "dependencies.json"
-ANALOG = ("CF_BUF_HIZ", "CF_ADC_SAR12", "CF_BGR", "CF_REFBUF")
+ANALOG = ("CF_BUF_HIZ", "CF_ADC_DSM20", "CF_BGR", "CF_REFBUF")
 # Soft dep of the Wishbone wrappers; not always listed in dependencies.json.
 ALWAYS = (("CF_IP_UTIL", "v1.0.0"),)
 

@@ -53,24 +53,30 @@ module user_project_wrapper (user_clock2,
  output [31:0] wbs_dat_o;
  input [3:0] wbs_sel_i;
 
- wire \afe_data[0] ;
- wire \afe_data[10] ;
- wire \afe_data[11] ;
- wire \afe_data[1] ;
- wire \afe_data[2] ;
- wire \afe_data[3] ;
- wire \afe_data[4] ;
- wire \afe_data[5] ;
- wire \afe_data[6] ;
- wire \afe_data[7] ;
- wire \afe_data[8] ;
- wire \afe_data[9] ;
- wire afe_eof;
+ wire afe_chopclk;
+ wire \afe_dout[0] ;
+ wire \afe_dout[1] ;
+ wire \afe_dout[2] ;
+ wire \afe_dout[3] ;
+ wire \afe_dout[4] ;
+ wire \afe_dout[5] ;
+ wire \afe_dout[6] ;
+ wire \afe_dout[7] ;
  wire afe_ibias;
  wire afe_nbias;
- wire afe_refby2;
- wire afe_refhi;
- wire afe_vout;
+ wire afe_out1;
+ wire afe_ov_one;
+ wire afe_ov_zero;
+ wire afe_scanout;
+ wire \afe_test[0] ;
+ wire \afe_test[1] ;
+ wire \afe_test[2] ;
+ wire \afe_test[3] ;
+ wire \afe_test[4] ;
+ wire \afe_test[5] ;
+ wire \afe_test[6] ;
+ wire \afe_test[7] ;
+ wire afe_test_dig;
  wire afe_vref;
  wire \analog_ctrl[0] ;
  wire \analog_ctrl[100] ;
@@ -98,15 +104,99 @@ module user_project_wrapper (user_clock2,
  wire \analog_ctrl[120] ;
  wire \analog_ctrl[121] ;
  wire \analog_ctrl[122] ;
+ wire \analog_ctrl[123] ;
+ wire \analog_ctrl[124] ;
+ wire \analog_ctrl[125] ;
+ wire \analog_ctrl[126] ;
+ wire \analog_ctrl[127] ;
+ wire \analog_ctrl[128] ;
+ wire \analog_ctrl[129] ;
  wire \analog_ctrl[12] ;
+ wire \analog_ctrl[130] ;
+ wire \analog_ctrl[131] ;
+ wire \analog_ctrl[132] ;
+ wire \analog_ctrl[133] ;
+ wire \analog_ctrl[134] ;
+ wire \analog_ctrl[135] ;
+ wire \analog_ctrl[136] ;
+ wire \analog_ctrl[137] ;
+ wire \analog_ctrl[138] ;
+ wire \analog_ctrl[139] ;
  wire \analog_ctrl[13] ;
+ wire \analog_ctrl[140] ;
+ wire \analog_ctrl[141] ;
+ wire \analog_ctrl[142] ;
+ wire \analog_ctrl[143] ;
+ wire \analog_ctrl[144] ;
+ wire \analog_ctrl[145] ;
+ wire \analog_ctrl[146] ;
+ wire \analog_ctrl[147] ;
+ wire \analog_ctrl[148] ;
+ wire \analog_ctrl[149] ;
  wire \analog_ctrl[14] ;
+ wire \analog_ctrl[150] ;
+ wire \analog_ctrl[151] ;
+ wire \analog_ctrl[152] ;
+ wire \analog_ctrl[153] ;
+ wire \analog_ctrl[154] ;
+ wire \analog_ctrl[155] ;
+ wire \analog_ctrl[156] ;
+ wire \analog_ctrl[157] ;
+ wire \analog_ctrl[158] ;
+ wire \analog_ctrl[159] ;
  wire \analog_ctrl[15] ;
+ wire \analog_ctrl[160] ;
+ wire \analog_ctrl[161] ;
+ wire \analog_ctrl[162] ;
+ wire \analog_ctrl[163] ;
+ wire \analog_ctrl[164] ;
+ wire \analog_ctrl[165] ;
+ wire \analog_ctrl[166] ;
+ wire \analog_ctrl[167] ;
+ wire \analog_ctrl[168] ;
+ wire \analog_ctrl[169] ;
  wire \analog_ctrl[16] ;
+ wire \analog_ctrl[170] ;
+ wire \analog_ctrl[171] ;
+ wire \analog_ctrl[172] ;
+ wire \analog_ctrl[173] ;
+ wire \analog_ctrl[174] ;
+ wire \analog_ctrl[175] ;
+ wire \analog_ctrl[176] ;
+ wire \analog_ctrl[177] ;
+ wire \analog_ctrl[178] ;
+ wire \analog_ctrl[179] ;
  wire \analog_ctrl[17] ;
+ wire \analog_ctrl[180] ;
+ wire \analog_ctrl[181] ;
+ wire \analog_ctrl[182] ;
+ wire \analog_ctrl[183] ;
+ wire \analog_ctrl[184] ;
+ wire \analog_ctrl[185] ;
+ wire \analog_ctrl[186] ;
+ wire \analog_ctrl[187] ;
+ wire \analog_ctrl[188] ;
+ wire \analog_ctrl[189] ;
  wire \analog_ctrl[18] ;
+ wire \analog_ctrl[190] ;
+ wire \analog_ctrl[191] ;
+ wire \analog_ctrl[192] ;
+ wire \analog_ctrl[193] ;
+ wire \analog_ctrl[194] ;
+ wire \analog_ctrl[195] ;
+ wire \analog_ctrl[196] ;
+ wire \analog_ctrl[197] ;
+ wire \analog_ctrl[198] ;
+ wire \analog_ctrl[199] ;
  wire \analog_ctrl[19] ;
  wire \analog_ctrl[1] ;
+ wire \analog_ctrl[200] ;
+ wire \analog_ctrl[201] ;
+ wire \analog_ctrl[202] ;
+ wire \analog_ctrl[203] ;
+ wire \analog_ctrl[204] ;
+ wire \analog_ctrl[205] ;
+ wire \analog_ctrl[206] ;
  wire \analog_ctrl[20] ;
  wire \analog_ctrl[21] ;
  wire \analog_ctrl[22] ;
@@ -195,6 +285,8 @@ module user_project_wrapper (user_clock2,
  wire \analog_ctrl[98] ;
  wire \analog_ctrl[99] ;
  wire \analog_ctrl[9] ;
+ wire dsm_sumn;
+ wire dsm_sump;
  wire sram_ack;
  wire \sram_adr[0] ;
  wire \sram_adr[10] ;
@@ -300,124 +392,220 @@ module user_project_wrapper (user_clock2,
  wire \sram_wdat[9] ;
  wire sram_we;
 
- CF_ADC_SAR12 u_cf_adc_sar12 (.en_pump_lv(\analog_ctrl[20] ),
-    .vreflo(analog_io[22]),
-    .scan_test_mode(\analog_ctrl[21] ),
-    .test_scanin(\analog_ctrl[22] ),
-    .test_scanen(\analog_ctrl[23] ),
-    .hiz(\analog_ctrl[13] ),
-    .sof(\analog_ctrl[11] ),
-    .test_sea(\analog_ctrl[24] ),
-    .reset_n(\analog_ctrl[10] ),
-    .eof(afe_eof),
-    .iso_en(\analog_ctrl[14] ),
-    .next(\analog_ctrl[12] ),
-    .vinp(afe_vout),
-    .vinm(analog_io[20]),
-    .vrefhi(afe_refhi),
-    .trimunit(\analog_ctrl[16] ),
-    .vdda(analog_io[25]),
-    .vgnd(vssd1),
-    .VPUMP(analog_io[27]),
-    .vssa(analog_io[26]),
-    .refby2(afe_refby2),
-    .pumpclk(\analog_ctrl[19] ),
-    .pd(\analog_ctrl[8] ),
-    .pd_ana(\analog_ctrl[9] ),
-    .refclk(user_clock2),
+ CF_ADC_DSM20 u_cf_adc_dsm20 (.SUMCAPFB_EN(\analog_ctrl[200] ),
+    .SUMCAP3_EN(\analog_ctrl[195] ),
+    .SUMCAP2_EN(\analog_ctrl[191] ),
+    .SUMCAP1_EN(\analog_ctrl[187] ),
+    .DACCAPEN(\analog_ctrl[179] ),
+    .RESCAPEN(\analog_ctrl[183] ),
+    .ODET(\analog_ctrl[25] ),
+    .RESET1(\analog_ctrl[27] ),
+    .RESET2(\analog_ctrl[28] ),
+    .RESET3(\analog_ctrl[29] ),
+    .disable_mod(\analog_ctrl[9] ),
+    .CHOP_EN(\analog_ctrl[21] ),
+    .clk(wb_clk_i),
+    .MODBIT(\analog_ctrl[19] ),
+    .SIGN(\analog_ctrl[20] ),
+    .overload_det_one(afe_ov_one),
+    .overload_det_zero(afe_ov_zero),
+    .SCANOUTPUT(afe_scanout),
+    .buf_chopclk(afe_chopclk),
+    .test_dig_out(afe_test_dig),
+    .SUMP_TEST(dsm_sump),
+    .refout(analog_io[22]),
     .vpwr(vccd1),
-    .dly_inc(\analog_ctrl[17] ),
-    .dcen(\analog_ctrl[18] ),
-    .ibias2p5u(afe_ibias),
-    .ibias2p5u_1(afe_ibias),
-    .enable_hv(\analog_ctrl[15] ),
-    .cap_trim({\analog_ctrl[39] ,
-    \analog_ctrl[38] ,
-    \analog_ctrl[37] }),
-    .data_out({\afe_data[11] ,
-    \afe_data[10] ,
-    \afe_data[9] ,
-    \afe_data[8] ,
-    \afe_data[7] ,
-    \afe_data[6] ,
-    \afe_data[5] ,
-    \afe_data[4] ,
-    \afe_data[3] ,
-    \afe_data[2] ,
-    \afe_data[1] ,
-    \afe_data[0] }),
-    .dft_inc({\analog_ctrl[45] ,
+    .vgnd(vssd1),
+    .IPCAP1OFFSET(\analog_ctrl[164] ),
+    .IPCAP3EN(\analog_ctrl[172] ),
+    .IPCAP2EN(\analog_ctrl[168] ),
+    .IPCAP1EN(\analog_ctrl[163] ),
+    .FCAP3EN(\analog_ctrl[155] ),
+    .FCAP2EN(\analog_ctrl[150] ),
+    .FCAP1EN(\analog_ctrl[144] ),
+    .FCAP1OFFSET(\analog_ctrl[145] ),
+    .SUMCAPIN_EN(\analog_ctrl[206] ),
+    .INP(afe_out1),
+    .INN(analog_io[20]),
+    .EN_DEM(\analog_ctrl[15] ),
+    .TESTMODE(\analog_ctrl[26] ),
+    .EN_DWA(\analog_ctrl[17] ),
+    .SCANINPUT(\analog_ctrl[53] ),
+    .SCANMODE(\analog_ctrl[54] ),
+    .SCANCLK(\analog_ctrl[55] ),
+    .SCANEN(\analog_ctrl[56] ),
+    .reset_b(\analog_ctrl[8] ),
+    .VCM(analog_io[21]),
+    .vgndd_vnb(analog_io[26]),
+    .VGND_DAC(analog_io[26]),
+    .VREFQ(afe_vref),
+    .EN_ADWA(\analog_ctrl[16] ),
+    .PBUF_INP(afe_out1),
+    .VREF(afe_vref),
+    .PBUF_INN(analog_io[20]),
+    .vgnde_vnb(analog_io[26]),
+    .vgnde(analog_io[26]),
+    .vpwr_ext(analog_io[25]),
+    .vpwr_cp(analog_io[27]),
+    .vpwr_cp_dc(analog_io[27]),
+    .SUMN_TEST(dsm_sumn),
+    .bypass_n(\analog_ctrl[24] ),
+    .bypass_p(\analog_ctrl[23] ),
+    .phi2_buffer(\analog_ctrl[13] ),
+    .iso(\analog_ctrl[12] ),
+    .enable_hv(\analog_ctrl[11] ),
+    .COMBUF_INP(afe_out1),
+    .COMBUF_INN(analog_io[20]),
+    .MODINPUT(\analog_ctrl[18] ),
+    .sleep(\analog_ctrl[10] ),
+    .buf_sel(\analog_ctrl[14] ),
+    .vpwrd_int(analog_io[25]),
+    .vpwr_int(analog_io[25]),
+    .iinc(afe_nbias),
+    .iin(afe_ibias),
+    .BUF_CHOP_EN(\analog_ctrl[22] ),
+    .RESET_DEC_INPUT(\analog_ctrl[30] ),
+    .BUF_FCHOP({\analog_ctrl[36] ,
+    \analog_ctrl[35] ,
+    \analog_ctrl[34] }),
+    .DACCAP({\analog_ctrl[178] ,
+    \analog_ctrl[177] ,
+    \analog_ctrl[176] ,
+    \analog_ctrl[175] ,
+    \analog_ctrl[174] ,
+    \analog_ctrl[173] }),
+    .FCAP1({\analog_ctrl[143] ,
+    \analog_ctrl[142] ,
+    \analog_ctrl[141] ,
+    \analog_ctrl[140] ,
+    \analog_ctrl[139] ,
+    \analog_ctrl[138] ,
+    \analog_ctrl[137] }),
+    .FCAP2({\analog_ctrl[149] ,
+    \analog_ctrl[148] ,
+    \analog_ctrl[147] ,
+    \analog_ctrl[146] }),
+    .FCAP3({\analog_ctrl[154] ,
+    \analog_ctrl[153] ,
+    \analog_ctrl[152] ,
+    \analog_ctrl[151] }),
+    .FCHOP({\analog_ctrl[33] ,
+    \analog_ctrl[32] ,
+    \analog_ctrl[31] }),
+    .IPCAP1({\analog_ctrl[162] ,
+    \analog_ctrl[161] ,
+    \analog_ctrl[160] ,
+    \analog_ctrl[159] ,
+    \analog_ctrl[158] ,
+    \analog_ctrl[157] ,
+    \analog_ctrl[156] }),
+    .IPCAP2({\analog_ctrl[167] ,
+    \analog_ctrl[166] ,
+    \analog_ctrl[165] }),
+    .IPCAP3({\analog_ctrl[171] ,
+    \analog_ctrl[170] ,
+    \analog_ctrl[169] }),
+    .NONOV({\analog_ctrl[40] ,
+    \analog_ctrl[39] }),
+    .ODET_TH({\analog_ctrl[45] ,
     \analog_ctrl[44] ,
     \analog_ctrl[43] ,
-    \analog_ctrl[42] }),
-    .dft_outc({\analog_ctrl[48] ,
-    \analog_ctrl[47] ,
-    \analog_ctrl[46] }),
-    .icont_lv({\analog_ctrl[41] ,
-    \analog_ctrl[40] }),
-    .resolution({\analog_ctrl[26] ,
-    \analog_ctrl[25] }),
-    .sample_width({\analog_ctrl[36] ,
-    \analog_ctrl[35] ,
-    \analog_ctrl[34] ,
-    \analog_ctrl[33] ,
-    \analog_ctrl[32] ,
-    \analog_ctrl[31] ,
-    \analog_ctrl[30] ,
-    \analog_ctrl[29] ,
-    \analog_ctrl[28] ,
-    \analog_ctrl[27] }),
-    .sel_csel_dft({\analog_ctrl[52] ,
+    \analog_ctrl[42] ,
+    \analog_ctrl[41] }),
+    .RESCAP({\analog_ctrl[182] ,
+    \analog_ctrl[181] ,
+    \analog_ctrl[180] }),
+    .SUMCAP1({\analog_ctrl[186] ,
+    \analog_ctrl[185] ,
+    \analog_ctrl[184] }),
+    .SUMCAP2({\analog_ctrl[190] ,
+    \analog_ctrl[189] ,
+    \analog_ctrl[188] }),
+    .SUMCAP3({\analog_ctrl[194] ,
+    \analog_ctrl[193] ,
+    \analog_ctrl[192] }),
+    .SUMCAPFB({\analog_ctrl[199] ,
+    \analog_ctrl[198] ,
+    \analog_ctrl[197] ,
+    \analog_ctrl[196] }),
+    .SUMCAPIN({\analog_ctrl[205] ,
+    \analog_ctrl[204] ,
+    \analog_ctrl[203] ,
+    \analog_ctrl[202] ,
+    \analog_ctrl[201] }),
+    .bw({\analog_ctrl[52] ,
     \analog_ctrl[51] ,
     \analog_ctrl[50] ,
-    \analog_ctrl[49] }));
- CF_ADC_SAR12_sar_refs u_cf_adc_sar12_sar_refs (.vdda(analog_io[25]),
-    .vpwr(vccd1),
-    .VPUMP(analog_io[27]),
-    .vssa(analog_io[26]),
-    .vgnd(vssd1),
-    .pd(\analog_ctrl[8] ),
-    .hiz(\analog_ctrl[13] ),
-    .REFBY2(afe_refby2),
-    .pd_ana(\analog_ctrl[9] ),
-    .EN_RESVDA(\analog_ctrl[63] ),
-    .IREF_VCMBUF(afe_ibias),
-    .sw_start(\analog_ctrl[108] ),
-    .pd_vcmbuf(\analog_ctrl[109] ),
-    .refout(analog_io[21]),
-    .refout_en(\analog_ctrl[118] ),
-    .sw_holdb(\analog_ctrl[119] ),
-    .enpdb_hv(\analog_ctrl[120] ),
-    .REFHI(afe_refhi),
-    .enable_hv(\analog_ctrl[15] ),
-    .IREF_VREFBUF(afe_ibias),
-    .PD_BUF_VREF(\analog_ctrl[121] ),
-    .vssa_shield(analog_io[26]),
-    .dft_comp_en(\analog_ctrl[122] ),
-    .PWR_CTRL_VREF({\analog_ctrl[59] ,
-    \analog_ctrl[58] }),
-    .S_LV({\analog_ctrl[117] ,
+    \analog_ctrl[49] }),
+    .dig_test_sel({\analog_ctrl[48] ,
+    \analog_ctrl[47] ,
+    \analog_ctrl[46] }),
+    .dout({\afe_dout[7] ,
+    \afe_dout[6] ,
+    \afe_dout[5] ,
+    \afe_dout[4] ,
+    \afe_dout[3] ,
+    \afe_dout[2] ,
+    \afe_dout[1] ,
+    \afe_dout[0] }),
+    .itrim_1({\analog_ctrl[120] ,
+    \analog_ctrl[119] ,
+    \analog_ctrl[118] ,
+    \analog_ctrl[117] ,
     \analog_ctrl[116] ,
     \analog_ctrl[115] ,
     \analog_ctrl[114] ,
     \analog_ctrl[113] ,
     \analog_ctrl[112] ,
-    \analog_ctrl[111] ,
-    \analog_ctrl[110] }),
-    .muxsarref({\analog_ctrl[62] ,
-    \analog_ctrl[61] ,
-    \analog_ctrl[60] }),
-    .vref({\analog_ctrl[57] ,
-    \analog_ctrl[56] ,
-    \analog_ctrl[55] ,
-    \analog_ctrl[54] ,
-    \analog_ctrl[53] }));
- CF_BGR u_cf_bgr (.finetune(\analog_ctrl[96] ),
-    .en_startb(\analog_ctrl[97] ),
-    .mux2sel(\analog_ctrl[92] ),
-    .dft_sel(\analog_ctrl[93] ),
-    .pd_ibg(\analog_ctrl[95] ),
-    .pd(\analog_ctrl[94] ),
+    \analog_ctrl[111] }),
+    .itrim_2_3({\analog_ctrl[104] ,
+    \analog_ctrl[103] ,
+    \analog_ctrl[102] ,
+    \analog_ctrl[101] ,
+    \analog_ctrl[100] ,
+    \analog_ctrl[99] }),
+    .itrim_comp({\analog_ctrl[98] ,
+    \analog_ctrl[97] ,
+    \analog_ctrl[96] ,
+    \analog_ctrl[95] }),
+    .itrim_sum({\analog_ctrl[110] ,
+    \analog_ctrl[109] ,
+    \analog_ctrl[108] ,
+    \analog_ctrl[107] ,
+    \analog_ctrl[106] ,
+    \analog_ctrl[105] }),
+    .qlev({\analog_ctrl[38] ,
+    \analog_ctrl[37] }),
+    .refsel({\analog_ctrl[136] ,
+    \analog_ctrl[135] ,
+    \analog_ctrl[134] ,
+    \analog_ctrl[133] ,
+    \analog_ctrl[132] ,
+    \analog_ctrl[131] ,
+    \analog_ctrl[130] ,
+    \analog_ctrl[129] ,
+    \analog_ctrl[128] ,
+    \analog_ctrl[127] ,
+    \analog_ctrl[126] ,
+    \analog_ctrl[125] ,
+    \analog_ctrl[124] ,
+    \analog_ctrl[123] ,
+    \analog_ctrl[122] ,
+    \analog_ctrl[121] }),
+    .test({\afe_test[7] ,
+    \afe_test[6] ,
+    \afe_test[5] ,
+    \afe_test[4] ,
+    \afe_test[3] ,
+    \afe_test[2] ,
+    \afe_test[1] ,
+    \afe_test[0] }));
+ CF_BGR u_cf_bgr (.finetune(\analog_ctrl[89] ),
+    .en_startb(\analog_ctrl[90] ),
+    .mux2sel(\analog_ctrl[85] ),
+    .dft_sel(\analog_ctrl[86] ),
+    .pd_ibg(\analog_ctrl[88] ),
+    .pd(\analog_ctrl[87] ),
     .dft_curr_in(analog_io[24]),
     .vb2_fast(analog_io[0]),
     .Vout(afe_vref),
@@ -425,65 +613,79 @@ module user_project_wrapper (user_clock2,
     .ibg_2p375uA(afe_ibias),
     .vgnd(vssd1),
     .vpwr(vccd1),
-    .CurrAbsTrim({\analog_ctrl[82] ,
+    .CurrAbsTrim({\analog_ctrl[75] ,
+    \analog_ctrl[74] ,
+    \analog_ctrl[73] ,
+    \analog_ctrl[72] ,
+    \analog_ctrl[71] ,
+    \analog_ctrl[70] }),
+    .inl_ctrl({\analog_ctrl[82] ,
     \analog_ctrl[81] ,
     \analog_ctrl[80] ,
     \analog_ctrl[79] ,
     \analog_ctrl[78] ,
-    \analog_ctrl[77] }),
-    .inl_ctrl({\analog_ctrl[89] ,
-    \analog_ctrl[88] ,
-    \analog_ctrl[87] ,
-    \analog_ctrl[86] ,
-    \analog_ctrl[85] ,
-    \analog_ctrl[84] ,
+    \analog_ctrl[77] ,
+    \analog_ctrl[76] }),
+    .mux1sel({\analog_ctrl[84] ,
     \analog_ctrl[83] }),
-    .mux1sel({\analog_ctrl[91] ,
-    \analog_ctrl[90] }),
-    .trimCurr({\analog_ctrl[76] ,
-    \analog_ctrl[75] ,
-    \analog_ctrl[74] ,
-    \analog_ctrl[73] ,
-    \analog_ctrl[72] ,
-    \analog_ctrl[71] }),
-    .trimTC({\analog_ctrl[70] ,
-    \analog_ctrl[69] ,
+    .trimCurr({\analog_ctrl[69] ,
     \analog_ctrl[68] ,
     \analog_ctrl[67] ,
     \analog_ctrl[66] ,
     \analog_ctrl[65] ,
-    \analog_ctrl[64] }));
- CF_BUF_HIZ u_cf_buf_hiz (.tp(\analog_ctrl[2] ),
-    .vgnd(vssd1),
-    .clk2_boost(\analog_ctrl[3] ),
-    .clk1_boostr(\analog_ctrl[6] ),
+    \analog_ctrl[64] }),
+    .trimTC({\analog_ctrl[63] ,
+    \analog_ctrl[62] ,
+    \analog_ctrl[61] ,
+    \analog_ctrl[60] ,
+    \analog_ctrl[59] ,
+    \analog_ctrl[58] ,
+    \analog_ctrl[57] }));
+ CF_BUF_HIZ u_cf_buf_hiz (.bypass_n(\analog_ctrl[5] ),
+    .clk_chop(io_out[15]),
+    .disable_n(\analog_ctrl[3] ),
+    .disable_p(\analog_ctrl[2] ),
+    .enable_hv(\analog_ctrl[1] ),
+    .lpwr(io_out[15]),
+    .rail(io_out[15]),
+    .rc(io_out[15]),
+    .vgnd1(analog_io[5]),
+    .vgnd_core(analog_io[6]),
+    .vinp2(analog_io[2]),
+    .vpwr_core(analog_io[3]),
+    .vpwrb(analog_io[4]),
+    .vpwrb_clk(analog_io[4]),
+    .out2(analog_io[20]),
+    .vinp1(analog_io[1]),
+    .iref(afe_ibias),
+    .vcm(analog_io[21]),
+    .out1(afe_out1),
+    .iref_casc(afe_nbias),
     .vpwr(vccd1),
-    .vout(afe_vout),
-    .ibias(afe_ibias),
-    .e_pd(\analog_ctrl[0] ),
-    .en_pd(\analog_ctrl[1] ),
-    .vinp_n(analog_io[3]),
-    .vinn_n(analog_io[4]),
-    .vinp_na(analog_io[5]),
-    .vinn_na(analog_io[6]),
-    .vinn_p(analog_io[2]),
-    .vinp_p(analog_io[1]),
-    .e_na_boost(\analog_ctrl[5] ),
-    .e_n_boost(\analog_ctrl[4] ));
+    .vpwr_acore(analog_io[3]),
+    .pd(\analog_ctrl[0] ),
+    .vgnd(vssd1),
+    .bypass_p(\analog_ctrl[4] ),
+    .gain({\analog_ctrl[7] ,
+    \analog_ctrl[6] }));
  CF_REFBUF u_cf_refbuf (.nbias(afe_nbias),
     .out(analog_io[7]),
     .ref_1v2(afe_vref),
     .vgnd(vssd1),
-    .pd(\analog_ctrl[104] ),
+    .pd(\analog_ctrl[91] ),
     .ng(analog_io[8]),
-    .switchon(\analog_ctrl[105] ),
-    .ch_cont(\analog_ctrl[107] ),
-    .boost(\analog_ctrl[106] ),
+    .switchon(\analog_ctrl[92] ),
+    .ch_cont(\analog_ctrl[94] ),
+    .boost(\analog_ctrl[93] ),
     .vpwre(analog_io[8]),
     .ch2(analog_io[7]),
     .vpwr(vccd1),
     .ch1(analog_io[7]));
- soc_sys u_soc_sys (.adc_eof(afe_eof),
+ soc_sys u_soc_sys (.adc_chopclk(afe_chopclk),
+    .adc_ov_one(afe_ov_one),
+    .adc_ov_zero(afe_ov_zero),
+    .adc_scanout(afe_scanout),
+    .adc_test_dig(afe_test_dig),
     .sram_ack_i(sram_ack),
     .sram_cyc_o(sram_cyc),
     .sram_stb_o(sram_stb),
@@ -496,19 +698,107 @@ module user_project_wrapper (user_clock2,
     .wbs_cyc_i(wbs_cyc_i),
     .wbs_stb_i(wbs_stb_i),
     .wbs_we_i(wbs_we_i),
-    .adc_data({\afe_data[11] ,
-    \afe_data[10] ,
-    \afe_data[9] ,
-    \afe_data[8] ,
-    \afe_data[7] ,
-    \afe_data[6] ,
-    \afe_data[5] ,
-    \afe_data[4] ,
-    \afe_data[3] ,
-    \afe_data[2] ,
-    \afe_data[1] ,
-    \afe_data[0] }),
-    .analog_ctrl({\analog_ctrl[122] ,
+    .adc_dout({\afe_dout[7] ,
+    \afe_dout[6] ,
+    \afe_dout[5] ,
+    \afe_dout[4] ,
+    \afe_dout[3] ,
+    \afe_dout[2] ,
+    \afe_dout[1] ,
+    \afe_dout[0] }),
+    .adc_test({\afe_test[7] ,
+    \afe_test[6] ,
+    \afe_test[5] ,
+    \afe_test[4] ,
+    \afe_test[3] ,
+    \afe_test[2] ,
+    \afe_test[1] ,
+    \afe_test[0] }),
+    .analog_ctrl({\analog_ctrl[206] ,
+    \analog_ctrl[205] ,
+    \analog_ctrl[204] ,
+    \analog_ctrl[203] ,
+    \analog_ctrl[202] ,
+    \analog_ctrl[201] ,
+    \analog_ctrl[200] ,
+    \analog_ctrl[199] ,
+    \analog_ctrl[198] ,
+    \analog_ctrl[197] ,
+    \analog_ctrl[196] ,
+    \analog_ctrl[195] ,
+    \analog_ctrl[194] ,
+    \analog_ctrl[193] ,
+    \analog_ctrl[192] ,
+    \analog_ctrl[191] ,
+    \analog_ctrl[190] ,
+    \analog_ctrl[189] ,
+    \analog_ctrl[188] ,
+    \analog_ctrl[187] ,
+    \analog_ctrl[186] ,
+    \analog_ctrl[185] ,
+    \analog_ctrl[184] ,
+    \analog_ctrl[183] ,
+    \analog_ctrl[182] ,
+    \analog_ctrl[181] ,
+    \analog_ctrl[180] ,
+    \analog_ctrl[179] ,
+    \analog_ctrl[178] ,
+    \analog_ctrl[177] ,
+    \analog_ctrl[176] ,
+    \analog_ctrl[175] ,
+    \analog_ctrl[174] ,
+    \analog_ctrl[173] ,
+    \analog_ctrl[172] ,
+    \analog_ctrl[171] ,
+    \analog_ctrl[170] ,
+    \analog_ctrl[169] ,
+    \analog_ctrl[168] ,
+    \analog_ctrl[167] ,
+    \analog_ctrl[166] ,
+    \analog_ctrl[165] ,
+    \analog_ctrl[164] ,
+    \analog_ctrl[163] ,
+    \analog_ctrl[162] ,
+    \analog_ctrl[161] ,
+    \analog_ctrl[160] ,
+    \analog_ctrl[159] ,
+    \analog_ctrl[158] ,
+    \analog_ctrl[157] ,
+    \analog_ctrl[156] ,
+    \analog_ctrl[155] ,
+    \analog_ctrl[154] ,
+    \analog_ctrl[153] ,
+    \analog_ctrl[152] ,
+    \analog_ctrl[151] ,
+    \analog_ctrl[150] ,
+    \analog_ctrl[149] ,
+    \analog_ctrl[148] ,
+    \analog_ctrl[147] ,
+    \analog_ctrl[146] ,
+    \analog_ctrl[145] ,
+    \analog_ctrl[144] ,
+    \analog_ctrl[143] ,
+    \analog_ctrl[142] ,
+    \analog_ctrl[141] ,
+    \analog_ctrl[140] ,
+    \analog_ctrl[139] ,
+    \analog_ctrl[138] ,
+    \analog_ctrl[137] ,
+    \analog_ctrl[136] ,
+    \analog_ctrl[135] ,
+    \analog_ctrl[134] ,
+    \analog_ctrl[133] ,
+    \analog_ctrl[132] ,
+    \analog_ctrl[131] ,
+    \analog_ctrl[130] ,
+    \analog_ctrl[129] ,
+    \analog_ctrl[128] ,
+    \analog_ctrl[127] ,
+    \analog_ctrl[126] ,
+    \analog_ctrl[125] ,
+    \analog_ctrl[124] ,
+    \analog_ctrl[123] ,
+    \analog_ctrl[122] ,
     \analog_ctrl[121] ,
     \analog_ctrl[120] ,
     \analog_ctrl[119] ,

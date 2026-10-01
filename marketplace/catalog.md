@@ -1,26 +1,24 @@
-# Sensor SoC
+# DSM sensor SoC
 
-ChipFoundry **sensor SoC** on Caravel: the `cf-sensor-afe` analog island
-plus UART, SPI, I2C, three 32-bit timers, and 4 KB SRAM for ADC capture.
-
-This is a separate project from `cf-sensor-afe`. Analog wrap GDS and
-placement stay on the AFE repo.
+ChipFoundry **DSM sensor SoC** on Caravel: a fork of `cf-sensor-soc` with
+`CF_ADC_DSM20` in place of the SAR, plus UART, SPI, I2C, three 32-bit
+timers, and 4 KB SRAM for modulator capture.
 
 ## Key features
 
-* High-Z differential sensor inputs on GPIO 8–13 (`CF_BUF_HIZ`)
-* 12-bit SAR at up to 1 Msps (`CF_ADC_SAR12` + `sar_refs`)
+* Differential sensor inputs on GPIO 8–9 (`CF_BUF_HIZ`), with its analog supplies on GPIO 10–13
+* Delta-sigma modulator (`CF_ADC_DSM20`) clocked by the Wishbone clock
 * Bandgap and buffered 1.2 V reference (`CF_BGR`, `CF_REFBUF`)
 * User UART / SPI / I2C / 3× `CF_TMR32` in `soc_sys`
 * `CF_SRAM_1024x32` capture buffer at `0x30010000`
-* Same `afe_wb` CSR as the AFE at `0x30000000`
+* `afe_wb` at `0x30000000` (ID `0xAFE00020`)
 
 ## Catalog IPs
 
 | IP | Version | Role |
 | --- | --- | --- |
-| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.6 | Sensor input buffer |
-| [CF_ADC_SAR12](https://github.com/chipfoundry/CF_ADC_SAR12) | 0.2.8 | 12-bit SAR + wrapped `sar_refs` |
+| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.7 | Sensor input buffer |
+| [CF_ADC_DSM20](https://github.com/chipfoundry/CF_ADC_DSM20) | 0.2.1 | Delta-sigma modulator |
 | [CF_BGR](https://github.com/chipfoundry/CF_BGR) | 0.2.9 | Bandgap bias / 1.2 V reference |
 | [CF_REFBUF](https://github.com/chipfoundry/CF_REFBUF) | 0.2.8 | Buffered `Vout` monitor |
 | [CF_UART](https://github.com/chipfoundry/CF_UART) | v2.0.2 | User UART |
@@ -46,7 +44,7 @@ placement stay on the AFE repo.
 ## GPIO (digital steal)
 
 GPIO 16–26, 30, and 35–37 are user digital. HIZ bias pads that used
-those pins on the AFE are not bonded. Sensor, reference, and SAR analog
+those pins on the AFE are not bonded. Sensor, reference, and DSM analog
 pads stay analog.
 
 ## Resources

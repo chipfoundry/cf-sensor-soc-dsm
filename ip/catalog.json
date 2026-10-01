@@ -117,12 +117,27 @@
         ],
         "draft": false,
         "sha256": "12c39906b2a92fdce39b99d085ce96ffbf03448010b1c2a0c296369324065f75"
+      },
+      "0.2.7": {
+        "date": "9-29-2026",
+        "maturity": "Production",
+        "bus": [],
+        "type": "hard",
+        "width": "621",
+        "height": "440",
+        "cell_count": "2",
+        "clock_freq_mhz": "n/a",
+        "supply_voltage": [
+          "1.8"
+        ],
+        "draft": false,
+        "sha256": "51594642cbc8781347cd0b359d933c8b5b59a0080f63b77fec303635218b9528"
       }
     }
   },
-  "CF_ADC_SAR12": {
-    "description": "12-bit successive-approximation ADC hard macro.",
-    "repo": "github.com/chipfoundry/CF_ADC_SAR12",
+  "CF_ADC_DSM20": {
+    "description": "Delta-sigma modulator ADC hard macro.",
+    "repo": "github.com/chipfoundry/CF_ADC_DSM20",
     "author": "ChipFoundry",
     "email": "support@chipfoundry.io",
     "owner": "ChipFoundry",
@@ -131,128 +146,24 @@
     "license": "proprietary",
     "tags": [
       "adc",
-      "sar"
+      "dsm",
+      "delta-sigma"
     ],
     "release": {
       "0.2.1": {
-        "date": "9-5-2026",
+        "date": "9-29-2026",
         "maturity": "Production",
         "bus": [],
         "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "5c83bf83bc820640acbe912ce51787e42f8802089275aef759892f05a6d6cd50"
-      },
-      "0.2.2": {
-        "date": "9-5-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "4d0bc94b2818ae04c6f58772bf5304d8d349ea645a03daeaef00757baa0e8720"
-      },
-      "0.2.3": {
-        "date": "9-17-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "91d6a16fa64eefd96814d7eb06015b3b8db1922e7597d86fba9f79803a3087a9"
-      },
-      "0.2.4": {
-        "date": "9-18-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "30d3b88627b8294c7ad888efdc58d00edc75b930abdae6f1ede180b5d8cd46d6"
-      },
-      "0.2.5": {
-        "date": "9-19-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "4671401043d1c862634e93904ed3acee12b59d5000a7ee53c0c6691dc1ade026"
-      },
-      "0.2.6": {
-        "date": "9-21-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "c63f8db08ecdc3ae3ac82770c28d94c18cca0dd5600b7696c779d302a87c4133"
-      },
-      "0.2.7": {
-        "date": "9-25-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
-        "supply_voltage": [
-          "1.8"
-        ],
-        "draft": true,
-        "sha256": "1b8dd99121519a2767b18e10c8a442f6863b0b4978e35b6687e8814c8c97ab5d"
-      },
-      "0.2.8": {
-        "date": "9-25-2026",
-        "maturity": "Production",
-        "bus": [],
-        "type": "hard",
-        "width": "503.24",
-        "height": "533",
-        "cell_count": "4",
-        "clock_freq_mhz": "18",
+        "width": "962.27",
+        "height": "621.385",
+        "cell_count": "2",
+        "clock_freq_mhz": "n/a",
         "supply_voltage": [
           "1.8"
         ],
         "draft": false,
-        "sha256": "0c676e3c73ab49313d7d29538a3d839ed3d0fa5d3b6103de16759d89a8247eb7"
+        "sha256": "119499903af3778bfa16ef2cf1c4f4a69aef0a7f64ed625c37f62cf0a0a2bfd7"
       }
     }
   },

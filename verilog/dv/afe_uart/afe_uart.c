@@ -16,9 +16,9 @@
 /*
  * Sensor AFE eval firmware — Wishbone CSR at 0x30000000.
  *
- * Word offsets: 0 ID, 1 CTRL, 2 STATUS (data_out[11:0], eof at [12]).
- * CTRL: [0] reset_n [1] sof [2] pd [3] pd_ana [4] enable_hv
- *       [5] hiz [6] iso_en [7] next
+ * Word offsets: 0 ID, 1 CTRL, 2 STATUS (dout[7:0]), 3 HIZ.
+ * CTRL[0] is DSM reset_b. disable_mod and sleep stay low.
+ * HIZ[1] is enable_hv. pd and the path disables stay low.
  *
  * Analog GPIOs 7-29 and 31-34 match user_defines.v. GPIO 30 is unused.
  * UART TX is GPIO 6.
@@ -29,11 +29,10 @@
 #define AFE_ID             0
 #define AFE_CTRL           1
 #define AFE_STATUS         2
-#define AFE_CTRL_RESET_N   (1u << 0)
-#define AFE_CTRL_SOF       (1u << 1)
-#define AFE_CTRL_ENABLE_HV (1u << 4)
-#define AFE_STATUS_EOF     (1u << 12)
-#define AFE_ID_VALUE       0xAFE00001u
+#define AFE_HIZ            3
+#define AFE_CTRL_RESET_B   (1u << 0)
+#define AFE_HIZ_ENABLE_HV  (1u << 1)
+#define AFE_ID_VALUE       0xAFE00020u
 
 static void delay(int n)
 {
@@ -55,26 +54,16 @@ static int afe_enable(void)
 	reg_wb_enable = 1;
 	if (AFE_BASE[AFE_ID] != AFE_ID_VALUE)
 		return -1;
-	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV;
+	AFE_BASE[AFE_HIZ] = AFE_HIZ_ENABLE_HV;
+	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_B;
 	delay(40);
 	return 0;
 }
 
 static unsigned int afe_sample(void)
 {
-	unsigned int st;
-	int i;
-
-	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV | AFE_CTRL_SOF;
 	delay(40);
-	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV;
-	for (i = 0; i < 4000; i++) {
-		st = AFE_BASE[AFE_STATUS];
-		if (st & AFE_STATUS_EOF)
-			return st & 0xFFFu;
-		asm volatile("nop");
-	}
-	return AFE_BASE[AFE_STATUS] & 0xFFFu;
+	return AFE_BASE[AFE_STATUS] & 0xFFu;
 }
 
 void main()
@@ -128,7 +117,7 @@ void main()
 	reg_mprj_datah = 0x20;
 
 	print("AFE ready\n");
-	print("ID AFE00001\n");
+	print("ID AFE00020\n");
 	print("ADC ");
 	print_hex12(code);
 	print("\n");

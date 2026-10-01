@@ -194,14 +194,8 @@ module afe_uart_tb;
 	assign mprj_io[0] = 0;  // Disable debug mode
 
 	initial begin
-		uut.chip_core.mprj.u_cf_buf_hiz.u_core.vinp_p_v = 1.65;
-		uut.chip_core.mprj.u_cf_buf_hiz.u_core.vinn_p_v = 0.0;
-		uut.chip_core.mprj.u_cf_adc_sar12.u_core.vinm_v = 0.0;
-		uut.chip_core.mprj.u_cf_adc_sar12.u_core.vrefhi_v = 3.3;
-		uut.chip_core.mprj.u_cf_adc_sar12.u_core.vreflo_v = 0.0;
-		#1;
-		uut.chip_core.mprj.u_cf_adc_sar12.u_core.vinp_v =
-		    uut.chip_core.mprj.u_cf_buf_hiz.u_core.vout_v;
+		force uut.chip_core.mprj.u_cf_buf_hiz.u_core.vinp1 = 1'b1;
+		force uut.chip_core.mprj.u_cf_buf_hiz.u_core.vinp2 = 1'b0;
 	end
 
 	caravel uut (

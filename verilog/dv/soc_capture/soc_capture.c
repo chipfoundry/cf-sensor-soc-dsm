@@ -14,10 +14,8 @@
 
 #define AFE_ID             0
 #define AFE_CTRL           1
-#define AFE_CTRL_RESET_N   (1u << 0)
-#define AFE_CTRL_SOF       (1u << 1)
-#define AFE_CTRL_ENABLE_HV (1u << 4)
-#define AFE_ID_VALUE       0xAFE00001u
+#define AFE_CTRL_RESET_B   (1u << 0)
+#define AFE_ID_VALUE       0xAFE00020u
 
 #define CAP_ID             0
 #define CAP_CTRL           1
@@ -59,7 +57,7 @@ void main()
 			;
 	}
 
-	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV;
+	AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_B;
 	delay(40);
 	CAP_BASE[CAP_COUNT] = n;
 	CAP_BASE[CAP_CTRL] = 1;
@@ -68,16 +66,13 @@ void main()
 		st = CAP_BASE[CAP_STATUS];
 		if (st & CAP_STATUS_DONE)
 			break;
-		AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV | AFE_CTRL_SOF;
-		delay(40);
-		AFE_BASE[AFE_CTRL] = AFE_CTRL_RESET_N | AFE_CTRL_ENABLE_HV;
 		delay(40);
 	}
 
 	print("SOC ready\n");
 	for (i = 0; i < n; i++) {
 		print("SRAM ");
-		print_hex12(SRAM_BASE[i] & 0xFFFu);
+		print_hex12(SRAM_BASE[i] & 0xFFu);
 		print("\n");
 	}
 	for (;;)

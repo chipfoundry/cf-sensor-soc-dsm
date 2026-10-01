@@ -2,19 +2,20 @@
 /*
  * soc_sys — Wishbone fabric for the sensor SoC digital island.
  *
- *   0x30000000  afe_wb CSR (same map as cf-sensor-afe)
+ *   0x30000000  afe_wb CSR (DSM front end)
  *   0x30001000  CF_UART
  *   0x30002000  CF_SPI
  *   0x30003000  CF_I2C
- *   0x30004000  CF_TMR32 #0  (ADC sample period / PWM0 on GPIO 24)
+ *   0x30004000  CF_TMR32 #0  (PWM0 on GPIO 24)
  *   0x30005000  CF_TMR32 #1  (PWM0 on GPIO 25)
  *   0x30006000  CF_TMR32 #2  (tick / PWM0 on GPIO 26)
  *   0x30007000  CAP / GPIO CSR
  *   0x30010000  CF_SRAM_1024x32 (1024 x 32-bit words)
  *
- * CAP_CTRL[0] starts a burst: on each rising adc_eof, pack the 12-bit
- * sample into SRAM[ptr++] until CAP_COUNT words. Firmware must enable
- * each CF_* GCLK register (offset 0xFF10) before using that block.
+ * CAP_CTRL[0] starts a burst. Each SRAM write stores the current DSM
+ * dout byte plus the two overload flags until CAP_COUNT words. The
+ * modulator is clocked by wb_clk_i. Firmware must enable each CF_* GCLK
+ * register (offset 0xFF10) before using that block.
  */
 
 module soc_sys (
@@ -42,9 +43,14 @@ module soc_sys (
     input         sram_ack_i,
     input  [31:0] sram_dat_i,
 
-    input  [11:0] adc_data,
-    input         adc_eof,
-    output [122:0] analog_ctrl,
+    input  [7:0]  adc_dout,
+    input         adc_ov_zero,
+    input         adc_ov_one,
+    input         adc_scanout,
+    input         adc_test_dig,
+    input         adc_chopclk,
+    input  [7:0]  adc_test,
+    output [206:0] analog_ctrl,
 
     input  [30:0] io_in,
     output [30:0] io_out,
@@ -96,8 +102,13 @@ module soc_sys (
         .wbs_adr_i(wbs_adr_i),
         .wbs_ack_o(afe_ack),
         .wbs_dat_o(afe_dat),
-        .adc_data(adc_data),
-        .adc_eof(adc_eof),
+        .adc_dout(adc_dout),
+        .adc_ov_zero(adc_ov_zero),
+        .adc_ov_one(adc_ov_one),
+        .adc_scanout(adc_scanout),
+        .adc_test_dig(adc_test_dig),
+        .adc_chopclk(adc_chopclk),
+        .adc_test(adc_test),
         .analog_ctrl(analog_ctrl),
         .analog_io_oeb(afe_pad_oeb),
         .analog_io_out(afe_pad_out)
@@ -227,19 +238,10 @@ module soc_sys (
     reg        cap_done;
     reg [2:0]  cap_gpio_out;
     reg [2:0]  cap_gpio_oeb;
-    reg        eof_q;
     reg [2:0]  cap_st;
 
-    wire eof_rise = adc_eof & ~eof_q;
     wire cap_wr   = (cap_st == ST_WR);
     wire host_sram = sram_sel & host_valid & ~cap_wr;
-
-    always @(posedge wb_clk_i) begin
-        if (wb_rst_i)
-            eof_q <= 1'b0;
-        else
-            eof_q <= adc_eof;
-    end
 
     always @(posedge wb_clk_i) begin
         if (wb_rst_i) begin
@@ -288,7 +290,7 @@ module soc_sys (
                     end
                 end
                 ST_RUN: begin
-                    if (eof_rise & ~host_sram)
+                    if (~host_sram)
                         cap_st <= ST_WR;
                 end
                 ST_WR: begin
@@ -314,7 +316,7 @@ module soc_sys (
     assign sram_we_o  = cap_wr | wbs_we_i;
     assign sram_sel_o = 4'hF;
     assign sram_adr_o = cap_wr ? {20'h30010, cap_ptr, 2'b00} : wbs_adr_i;
-    assign sram_dat_o = cap_wr ? {20'b0, adc_data} : wbs_dat_i;
+    assign sram_dat_o = cap_wr ? {22'b0, adc_ov_one, adc_ov_zero, adc_dout} : wbs_dat_i;
 
     assign wbs_ack_o =
         (afe_sel  & afe_ack)  |

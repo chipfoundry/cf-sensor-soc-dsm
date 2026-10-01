@@ -13,7 +13,7 @@
     "RUN_POST_CTS_RESIZER_TIMING": false,
     "DESIGN_REPAIR_BUFFER_INPUT_PORTS": false,
     "FP_PDN_ENABLE_RAILS": false,
-    "//": "LibreLane 2.4.6 has no jumper-only antenna repair; diode insertion with no PDN rails leaves the diode VPWR/VGND floating and breaks LVS.",
+    "//": "LibreLane 2.4.6 has no jumper-only antenna repair; diode insertion with no PDN rails leaves diode VPWR/VGND floating and breaks LVS.",
     "RUN_ANTENNA_REPAIR": false,
     "RUN_FILL_INSERTION": false,
     "RUN_TAP_ENDCAP_INSERTION": false,
@@ -36,7 +36,7 @@
             ],
             "instances": {
                 "u_cf_buf_hiz": {
-                    "location": [99.82, 650.00],
+                    "location": [1917.84, 915.00],
                     "orientation": "N"
                 }
             },
@@ -45,22 +45,22 @@
                 "dir::../../ip/CF_BUF_HIZ/hdl/gl/CF_BUF_HIZ.v"
             ]
         },
-        "CF_ADC_SAR12": {
+        "CF_ADC_DSM20": {
             "gds": [
-                "dir::../../ip/CF_ADC_SAR12/layout/gds/CF_ADC_SAR12.gds"
+                "dir::../../ip/CF_ADC_DSM20/layout/gds/CF_ADC_DSM20.gds"
             ],
             "lef": [
-                "dir::../../ip/CF_ADC_SAR12/layout/lef/CF_ADC_SAR12.lef"
+                "dir::../../ip/CF_ADC_DSM20/layout/lef/CF_ADC_DSM20.lef"
             ],
             "instances": {
-                "u_cf_adc_sar12": {
-                    "location": [655.57, 650.00],
+                "u_cf_adc_dsm20": {
+                    "location": [655.57, 915.00],
                     "orientation": "N"
                 }
             },
             "nl": [
-                "dir::../../ip/CF_ADC_SAR12/hdl/gl/CF_ADC_SAR12_core.v",
-                "dir::../../ip/CF_ADC_SAR12/hdl/gl/CF_ADC_SAR12.v"
+                "dir::../../ip/CF_ADC_DSM20/hdl/gl/CF_ADC_DSM20_core.v",
+                "dir::../../ip/CF_ADC_DSM20/hdl/gl/CF_ADC_DSM20.v"
             ]
         },
         "CF_BGR": {
@@ -72,7 +72,7 @@
             ],
             "instances": {
                 "u_cf_bgr": {
-                    "location": [99.82, 1483.00],
+                    "location": [99.82, 1832.00],
                     "orientation": "N"
                 }
             },
@@ -90,31 +90,13 @@
             ],
             "instances": {
                 "u_cf_refbuf": {
-                    "location": [838.29, 1483.00],
+                    "location": [838.29, 1832.00],
                     "orientation": "N"
                 }
             },
             "nl": [
                 "dir::../../ip/CF_REFBUF/hdl/gl/CF_REFBUF_core.v",
                 "dir::../../ip/CF_REFBUF/hdl/gl/CF_REFBUF.v"
-            ]
-        },
-        "CF_ADC_SAR12_sar_refs": {
-            "gds": [
-                "dir::../../ip/CF_ADC_SAR12/layout/gds/CF_ADC_SAR12_sar_refs.gds"
-            ],
-            "lef": [
-                "dir::CF_ADC_SAR12_sar_refs.lef"
-            ],
-            "instances": {
-                "u_cf_adc_sar12_sar_refs": {
-                    "location": [1458.81, 650.00],
-                    "orientation": "N"
-                }
-            },
-            "nl": [
-                "dir::../../ip/CF_ADC_SAR12/hdl/gl/CF_ADC_SAR12_sar_refs_core.v",
-                "dir::../../ip/CF_ADC_SAR12/hdl/gl/CF_ADC_SAR12_sar_refs.v"
             ]
         },
         "soc_sys": {
@@ -182,10 +164,9 @@
     },
     "PDN_MACRO_CONNECTIONS": [
         "u_cf_buf_hiz vccd1 vssd1 vpwr vgnd",
-        "u_cf_adc_sar12 vccd1 vssd1 vpwr vgnd",
+        "u_cf_adc_dsm20 vccd1 vssd1 vpwr vgnd",
         "u_cf_bgr vccd1 vssd1 vpwr vgnd",
         "u_cf_refbuf vccd1 vssd1 vpwr vgnd",
-        "u_cf_adc_sar12_sar_refs vccd1 vssd1 vpwr vgnd",
         "u_soc_sys vccd1 vssd1 vccd1 vssd1",
         "u_sram vccd1 vssd1 VPWR VGND"
     ],
@@ -216,10 +197,9 @@
     "MAGIC_EXT_USE_GDS": false,
     "MAGIC_EXT_ABSTRACT_CELLS": [
         "^CF_BUF_HIZ_core$",
-        "^CF_ADC_SAR12_core$",
+        "^CF_ADC_DSM20_core$",
         "^CF_BGR_core$",
         "^CF_REFBUF_core$",
-        "^CF_ADC_SAR12_sar_refs_core$",
         "^CF_SRAM_1024x32$"
     ],
 
@@ -230,17 +210,15 @@
     "GRT_ADJUSTMENT": 0.2,
     "GRT_OVERFLOW_ITERS": 100,
 
-    "//": "Keep analog_ctrl off met3 on the SAR north pin row. Core met3 pads are 0.30 µm on a 0.65 µm pitch; parent met3 vias fail m3.2. Wrap LEF pins there are met2. Do not OBS wrap PG straps (parent y >= 1168.5). Narrow met3/met4 OBS is analog_ctrl[9] (pd_ana) through SAR vs the core south met3/met4 pad at parent (845.445,665). East met4 OBS keeps afe_ibias on the met3 PORT (m4.2 vs next analog pad); do not raise it to wrap PG at y=998.225. via3 OBS is SAR ibias2p5u / ibias2p5u_1: wrap already has via3, parent TAPER must not stack (via3.1). afe_ibias is not ANALOG_WIDE so it can land on the 0.46 µm met3 pin without TAPER. BUF wrap already has via2 on the ibias/vbpt island landings; parent ANALOG_WIDE must not stack a second via2 (via2.1a). Analog macros are spaced >=300 µm so sky130 700 µm FOM/poly windows are not analog-only (tapeout f1/pd). SAR x is aligned so wrap met4 centers hit parent PDN vias (m4.5ab).",
+    "//": "The SoC copies of the analog wrap LEFs omit core met3/met4 OBS. The targeted north-band guards reproduce the 1,420-blockage DRC-clean route without sealing the whole DSM core. The IP repos retain the full core OBS.",
     "ROUTING_OBSTRUCTIONS": [
-        "met3 670.57 1166.85 1143.81 1168.25",
-        "met3 844.50 664.50 850.00 1168.00",
-        "met4 844.50 664.50 850.00 1168.00",
-        "met4 1140.50 991.00 1144.00 998.00",
-        "via3 1143.30 992.90 1143.90 997.80",
-        "via2 267.30 983.40 267.85 983.95",
-        "via2 267.30 963.30 267.85 963.90",
-        "via2 324.80 834.40 325.35 834.95",
-        "via2 328.70 798.10 329.25 798.70"
+        "met5 1015.00 1490.00 1045.00 1500.00",
+        "met5 640.00 1506.00 1420.00 1510.20",
+        "met4 656.00 1496.60 1365.70 1536.40",
+        "met5 656.00 1496.60 1368.00 1536.40",
+        "met5 1368.00 1520.20 1620.00 1532.00",
+        "met3 1546.50 1483.20 1558.70 1521.80",
+        "met3 1519.00 1496.15 1603.30 1497.50"
     ],
 
     "//": "Fixed configurations for caravel. You should NOT edit this section",
