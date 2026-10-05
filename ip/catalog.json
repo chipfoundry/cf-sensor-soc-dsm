@@ -118,8 +118,8 @@
         "draft": false,
         "sha256": "12c39906b2a92fdce39b99d085ce96ffbf03448010b1c2a0c296369324065f75"
       },
-      "0.2.7": {
-        "date": "9-29-2026",
+      "0.2.8": {
+        "date": "10-2-2026",
         "maturity": "Production",
         "bus": [],
         "type": "hard",
@@ -131,7 +131,7 @@
           "1.8"
         ],
         "draft": false,
-        "sha256": "51594642cbc8781347cd0b359d933c8b5b59a0080f63b77fec303635218b9528"
+        "sha256": "74ed1d9986946fa6d71ad54673d4fe0ec1ea82bddaebf2d9c816a181970fbf2f"
       }
     }
   },
@@ -150,8 +150,8 @@
       "delta-sigma"
     ],
     "release": {
-      "0.2.1": {
-        "date": "9-29-2026",
+      "0.2.2": {
+        "date": "10-2-2026",
         "maturity": "Production",
         "bus": [],
         "type": "hard",
@@ -163,7 +163,7 @@
           "1.8"
         ],
         "draft": false,
-        "sha256": "119499903af3778bfa16ef2cf1c4f4a69aef0a7f64ed625c37f62cf0a0a2bfd7"
+        "sha256": "92251c26800b6f5b5830e8484a007de6e8f76dc3a0eed2feaee11ae76f80426a"
       }
     }
   },

@@ -6,8 +6,7 @@ module CF_ADC_DSM20 (
     EN_DWA,
     MODINPUT,
     sleep,
-    COMBUF_INN,
-    COMBUF_INP,
+    vgnd,
     PBUF_INN,
     PBUF_INP,
     buf_sel,
@@ -24,7 +23,6 @@ module CF_ADC_DSM20 (
     SUMN_TEST,
     vpwr_cp,
     vgnde,
-    vgnd,
     vpwr,
     vpwr_ext,
     refout,
@@ -107,8 +105,7 @@ module CF_ADC_DSM20 (
     input EN_DWA;
     input MODINPUT;
     inout sleep;
-    input COMBUF_INN;
-    input COMBUF_INP;
+    input vgnd;
     input PBUF_INN;
     input PBUF_INP;
     input buf_sel;
@@ -125,7 +122,6 @@ module CF_ADC_DSM20 (
     output SUMN_TEST;
     input vpwr_cp;
     input vgnde;
-    input vgnd;
     input vpwr;
     input vpwr_ext;
     output refout;
@@ -208,8 +204,8 @@ module CF_ADC_DSM20 (
         .EN_DWA(EN_DWA),
         .MODINPUT(MODINPUT),
         .sleep(sleep),
-        .COMBUF_INN(COMBUF_INN),
-        .COMBUF_INP(COMBUF_INP),
+        .COMBUF_INN(vgnd),
+        .COMBUF_INP(vgnd),
         .PBUF_INN(PBUF_INN),
         .PBUF_INP(PBUF_INP),
         .buf_sel(buf_sel),

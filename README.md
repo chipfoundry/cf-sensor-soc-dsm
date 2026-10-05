@@ -47,8 +47,8 @@ register (`+0xFF10`) before using that peripheral.
 
 | IP | Version | Role |
 | --- | --- | --- |
-| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.7 | Sensor input buffer |
-| [CF_ADC_DSM20](https://github.com/chipfoundry/CF_ADC_DSM20) | 0.2.1 | Delta-sigma modulator |
+| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.8 | Sensor input buffer |
+| [CF_ADC_DSM20](https://github.com/chipfoundry/CF_ADC_DSM20) | 0.2.2 | Delta-sigma modulator |
 | [CF_BGR](https://github.com/chipfoundry/CF_BGR) | 0.2.9 | Bandgap bias / 1.2 V reference |
 | [CF_REFBUF](https://github.com/chipfoundry/CF_REFBUF) | 0.2.8 | Buffered `Vout` monitor |
 | [CF_UART](https://github.com/chipfoundry/CF_UART) | v2.0.2 | User UART |
@@ -93,9 +93,9 @@ That clones the tags in `ip/dependencies.json`.
 | 34 | analog | `vpwr_cp` / `vpwr_cp_dc` |
 | 35–37 | bidir | Spare GPIO (`CAP` word 4) |
 
-On-chip nets: HIZ `out1` drives DSM `INP`, `COMBUF_INP`, and `PBUF_INP`.
-HIZ `out2` drives DSM `INN`, `COMBUF_INN`, and `PBUF_INN`, and is also
-on GPIO 27. BGR `Vout` drives `VREF` and `VREFQ`. BGR `ibg_2p375uA`
+On-chip nets: HIZ `out1` drives DSM `INP` and `PBUF_INP`.
+HIZ `out2` drives DSM `INN` and `PBUF_INN`, and is also
+on GPIO 27. `COMBUF_INP` and `COMBUF_INN` are grounded inside `CF_ADC_DSM20`. BGR `Vout` drives `VREF` and `VREFQ`. BGR `ibg_2p375uA`
 drives HIZ `iref` and DSM `iin`. BGR `ibg_3uA` drives HIZ `iref_casc`,
 DSM `iinc`, and REFBUF `nbias`. HIZ `vcm` shares the DSM `VCM` pad.
 `clk_chop`, `lpwr`, `rail`, and `rc` are held low by `io_out[15]`, which
@@ -121,8 +121,8 @@ cf harden user_project_wrapper --use-docker
 
 `cf setup --only-openlane --overwrite` puts shuttle pin CI2511 (LibreLane 2.4.6) back. Do not use it after the 3.0.13 venv exists. `--use-docker` is required: plain `cf harden` prefers Nix and that Nix pin is still CI2511, which has no analog NDR.
 
-`CF_BUF_HIZ` 0.2.7 is the `s8hizbuf_pumptop` wrap, 621 × 440 µm at
-(1917.84, 915), 300 µm east of the DSM. `CF_ADC_DSM20` 0.2.1 is
+`CF_BUF_HIZ` 0.2.8 is the `s8hizbuf_pumptop` wrap, 621 × 440 µm at
+(1917.84, 915), 300 µm east of the DSM. `CF_ADC_DSM20` 0.2.2 is
 962.27 × 621.385 µm at (655.57, 915), 300 µm above `soc_sys`. BGR and
 REFBUF sit at y=1832 so the gap above the DSM is about 296 µm. SRAM
 stays at (1300, 115). Chip PDN is `vccd1`/`vssd1` → wrap `vpwr`/`vgnd`.

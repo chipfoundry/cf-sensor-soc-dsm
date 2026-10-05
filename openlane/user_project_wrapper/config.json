@@ -13,8 +13,9 @@
     "RUN_POST_CTS_RESIZER_TIMING": false,
     "DESIGN_REPAIR_BUFFER_INPUT_PORTS": false,
     "FP_PDN_ENABLE_RAILS": false,
-    "//": "LibreLane 2.4.6 has no jumper-only antenna repair; diode insertion with no PDN rails leaves diode VPWR/VGND floating and breaks LVS.",
+    "//": "The post-route Antenna Repair step stays off. Detailed routing still repairs antennas; jumper-only keeps it from inserting diodes whose VPWR/VGND float when PDN rails are disabled.",
     "RUN_ANTENNA_REPAIR": false,
+    "DRT_ANTENNA_REPAIR_JUMPER_ONLY": true,
     "RUN_FILL_INSERTION": false,
     "RUN_TAP_ENDCAP_INSERTION": false,
     "RUN_CTS": false,
@@ -209,17 +210,6 @@
     "//": "met4/met5 sit around 50% derated from the analog obstructions above, so global routing has little slack. At the 0.3 default the router closes but leaves an m1.2 spacing violation; 0.2 signs off clean. Do not set GRT_ALLOW_CONGESTION: it lets DRT finish with shorts, which surfaces as an LVS net-count mismatch rather than a routing error.",
     "GRT_ADJUSTMENT": 0.2,
     "GRT_OVERFLOW_ITERS": 100,
-
-    "//": "The SoC copies of the analog wrap LEFs omit core met3/met4 OBS. The targeted north-band guards reproduce the 1,420-blockage DRC-clean route without sealing the whole DSM core. The IP repos retain the full core OBS.",
-    "ROUTING_OBSTRUCTIONS": [
-        "met5 1015.00 1490.00 1045.00 1500.00",
-        "met5 640.00 1506.00 1420.00 1510.20",
-        "met4 656.00 1496.60 1365.70 1536.40",
-        "met5 656.00 1496.60 1368.00 1536.40",
-        "met5 1368.00 1520.20 1620.00 1532.00",
-        "met3 1546.50 1483.20 1558.70 1521.80",
-        "met3 1519.00 1496.15 1603.30 1497.50"
-    ],
 
     "//": "Fixed configurations for caravel. You should NOT edit this section",
     "DESIGN_NAME": "user_project_wrapper",

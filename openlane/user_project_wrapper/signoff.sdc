@@ -59,6 +59,10 @@ set_multicycle_path -setup 2 -through [get_ports {wbs_cyc_i}]
 set_multicycle_path -hold 1  -through [get_ports {wbs_cyc_i}]
 set_multicycle_path -setup 2 -through [get_ports {wbs_stb_i}]
 set_multicycle_path -hold 1  -through [get_ports {wbs_stb_i}]
+# The SRAM controller registers ACK, so returned read data is sampled on
+# the same second Wishbone cycle.
+set_multicycle_path -setup 2 -through [get_pins -of_objects [get_nets {sram_rdat[*]}]]
+set_multicycle_path -hold 1  -through [get_pins -of_objects [get_nets {sram_rdat[*]}]]
 
 #------------------------------------------#
 # Retrieved Constraints

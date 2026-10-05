@@ -21,6 +21,8 @@
     "ERROR_ON_LINTER_ERRORS": false,
     "CLOCK_PERIOD": 25,
     "CLOCK_PORT": "wb_clk_i",
+    "//": "Wrapper routes land on these Wishbone inputs. One sky130 diode per input, tied to this macro's VPWR/VGND.",
+    "DIODE_ON_PORTS": "in",
     "FP_SIZING": "absolute",
     "DIE_AREA": "0.000 0.000 380 435",
     "CORE_AREA": "5.000 5.000 375 430",

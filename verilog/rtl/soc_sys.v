@@ -69,6 +69,16 @@ module soc_sys (
     assign io_out = gpio_out;
     assign io_oeb = gpio_oeb;
 
+    /* Caravel gives wb_rst_i half a clock of external delay. Register it
+     * at this boundary so that path ends at one flop. Assertion and
+     * release inside the macro follow the pin by two wb_clk_i cycles. */
+    reg rst_meta;
+    reg rst_sync;
+    always @(posedge wb_clk_i) begin
+        rst_meta <= wb_rst_i;
+        rst_sync <= rst_meta;
+    end
+
     wire        host_valid = wbs_cyc_i & wbs_stb_i;
     wire        in_user    = (wbs_adr_i[31:20] == 12'h300);
     wire [7:0]  slot       = wbs_adr_i[19:12];
@@ -93,7 +103,7 @@ module soc_sys (
 
     afe_wb u_afe_wb (
         .wb_clk_i(wb_clk_i),
-        .wb_rst_i(wb_rst_i),
+        .wb_rst_i(rst_sync),
         .wbs_stb_i(wbs_stb_i & afe_sel),
         .wbs_cyc_i(wbs_cyc_i & afe_sel),
         .wbs_we_i(wbs_we_i),
@@ -121,7 +131,7 @@ module soc_sys (
 
     CF_UART_WB u_uart (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(uart_dat),
@@ -137,7 +147,7 @@ module soc_sys (
 
     CF_SPI_WB u_spi (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(spi_dat),
@@ -155,7 +165,7 @@ module soc_sys (
 
     CF_I2C_WB u_i2c (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(i2c_dat),
@@ -175,7 +185,7 @@ module soc_sys (
 
     CF_TMR32_WB u_tmr0 (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(tmr0_dat),
@@ -192,7 +202,7 @@ module soc_sys (
 
     CF_TMR32_WB u_tmr1 (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(tmr1_dat),
@@ -209,7 +219,7 @@ module soc_sys (
 
     CF_TMR32_WB u_tmr2 (
         .clk_i(wb_clk_i),
-        .rst_i(wb_rst_i),
+        .rst_i(rst_sync),
         .adr_i(wbs_adr_i),
         .dat_i(wbs_dat_i),
         .dat_o(tmr2_dat),
@@ -244,7 +254,7 @@ module soc_sys (
     wire host_sram = sram_sel & host_valid & ~cap_wr;
 
     always @(posedge wb_clk_i) begin
-        if (wb_rst_i) begin
+        if (rst_sync) begin
             cap_ack     <= 1'b0;
             cap_rdata   <= 32'b0;
             cap_en      <= 1'b0;

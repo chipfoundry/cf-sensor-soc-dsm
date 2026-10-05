@@ -166,8 +166,6 @@ CF_ADC_DSM20 u_cf_adc_dsm20 (
     .VCM(analog_io[21]),
     .INP(afe_out1),
     .INN(analog_io[20]),
-    .COMBUF_INP(afe_out1),
-    .COMBUF_INN(analog_io[20]),
     .PBUF_INP(afe_out1),
     .PBUF_INN(analog_io[20]),
     .iin(afe_ibias),

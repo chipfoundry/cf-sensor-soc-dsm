@@ -3,7 +3,7 @@
     "name": "cf-sensor-soc-dsm",
     "type": "digital",
     "user": "jdicorpo",
-    "version": "6",
+    "version": "7",
     "github_repo_url": "https://github.com/chipfoundry/cf-sensor-soc-dsm",
     "gpio_config": {
       "5": "13'h0403",
@@ -40,7 +40,7 @@
       "36": "13'h1800",
       "37": "13'h1800"
     },
-    "user_project_wrapper_hash": "f565dc2c424d43e1f64739a1bacaf5fef72509d537ffcd17011123f144b802d2",
+    "user_project_wrapper_hash": "20afbcf86834d81a15cc139f5f7dada59134a1fa2823c554210fcdec673b3ac9",
     "submission_state": "Draft",
     "platform_project_id": "d17e8439-73c2-4c09-ab6c-e317f6ef597c"
   },

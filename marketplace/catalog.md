@@ -17,8 +17,8 @@ timers, and 4 KB SRAM for modulator capture.
 
 | IP | Version | Role |
 | --- | --- | --- |
-| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.7 | Sensor input buffer |
-| [CF_ADC_DSM20](https://github.com/chipfoundry/CF_ADC_DSM20) | 0.2.1 | Delta-sigma modulator |
+| [CF_BUF_HIZ](https://github.com/chipfoundry/CF_BUF_HIZ) | 0.2.8 | Sensor input buffer |
+| [CF_ADC_DSM20](https://github.com/chipfoundry/CF_ADC_DSM20) | 0.2.2 | Delta-sigma modulator |
 | [CF_BGR](https://github.com/chipfoundry/CF_BGR) | 0.2.9 | Bandgap bias / 1.2 V reference |
 | [CF_REFBUF](https://github.com/chipfoundry/CF_REFBUF) | 0.2.8 | Buffered `Vout` monitor |
 | [CF_UART](https://github.com/chipfoundry/CF_UART) | v2.0.2 | User UART |
